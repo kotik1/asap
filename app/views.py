@@ -5,11 +5,11 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import auth
-from app.models import UserProfile
+from .models import *
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
-from app import views
-from app.models import *
+from . import views
+from . import models
 
 def intro(request):
 	 return render(request, "intro.html", {})
