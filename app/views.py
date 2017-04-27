@@ -8,8 +8,8 @@ from django.contrib import auth
 from .models import *
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
-from . import views
-from . import models
+# from . import views
+# from . import models
 
 def intro(request):
 	 return render(request, "intro.html", {})
