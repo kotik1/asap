@@ -1,0 +1,334 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Task Management</title>
+
+ 
+  
+<link href="https://fonts.googleapis.com/css?family=Palanquin+Dark" rel="stylesheet">
+       <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+</head>
+<style type="text/css">
+
+
+.the_input{
+  width: 360px;height: 30px;border-top:none;border-left:none;border-right:none;display: block;margin-left: 60px;margin-top: 60px;
+border-bottom: 1px solid #000000;
+}
+
+.pass_input_reg{
+ width: 360px;height: 30px;border-top:none;border-left:none;border-right:none;display: block;margin-left: 60px;margin-top: 60px;
+border-bottom: 1px solid #000000;
+
+}
+
+input[type="button"]:hover{
+
+cursor: pointer;
+opacity: 0.5;
+}
+
+input[type="submit"]:hover{
+
+cursor: pointer;
+
+}
+
+#back_to_login:hover{
+  cursor: pointer;
+  opacity: 1;
+}
+
+  
+.the_input:focus{
+   transition: ease-in-out, width .35s ease-in-out;
+   border-color:black;
+   color: black;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+</style>
+
+<body style="margin: 0 !important;padding: 0 !important;background: #F6F6F6;font-family: 'Arimo', sans-serif;">
+
+
+<div style="width:500px;height: 500px;background: white;position:absolute;  left: 0; 
+  right: 0; top:150px;
+  margin-left: auto; 
+  margin-right: auto; 
+border: 1px solid #979797;
+" id="rect">
+  <div style="font-family: 'Palanquin Dark', sans-serif;font-size: 22px;text-align: center;margin-top: 60px;">ASAP Task Management</div>
+
+
+  <form id="top_form">
+    
+
+    <input type="text" placeholder="Username" style="" class="the_input" maxlength="100" id="key_input">
+    <input type="text" placeholder="Password" class="the_input" style="margin-top: 40px;" maxlength="100" id="pass_input">
+    <input type="submit" style="
+    width:140px;
+    height: 50px;
+background: black;
+border: 1px solid #979797;
+border-radius: 100px;color: white;margin-top: 70px;margin-left: 90px;font-size:12px;opacity: 0.8;" value="Login" ></input>
+ <input type="button" style="
+    width:160px;
+    height: 50px;
+background: white;
+border: 1px solid #979797;
+border-radius: 100px;color: black;margin-top: 50px;margin-left: 10px;font-size:12px;" value="Create account" id="create_account"></input>
+
+  </form>
+
+  <div style="margin-left: 100px;margin-top: 50px;font-size:12px;color: red;display: none" id="error_span">There is no user with such username and password</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="width:500px;height: 600px;background: white;position:absolute;  left: 0; 
+  right: 0; top:120px;
+  margin-left: auto; 
+  margin-right: auto; 
+border: 1px solid #979797;
+display: none;
+" id="rect_reg">
+  <div style="font-family: 'Palanquin Dark', sans-serif;font-size: 22px;text-align: center;margin-top: 60px;">ASAP Task Management</div>
+
+
+  <form id="reg_form">
+    
+
+    <input type="text" placeholder="Username" style="" class="the_input" maxlength="100" id="key_input_reg">
+    <input type="text" placeholder="Password"  style="margin-top: 40px;" maxlength="100" class="pass_input_reg" id="pass_1">
+    <input type="text" placeholder="Password again"  style="margin-top: 40px;" maxlength="100" class="pass_input_reg" id="pass_2">
+   
+ <input type="submit" style="
+    width:160px;
+    height: 50px;
+background: white;
+border: 1px solid #979797;
+border-radius: 100px;color: black;margin-top: 50px;margin-left: 158px;font-size:12px;" value="Create account"></input>
+<div id="back_to_login" style="font-size:12px;margin-top: 30px;margin-left: 200px;opacity: 0.7">Back to login</div>
+
+  </form>
+
+  <div style="margin-left: 160px;margin-top: 50px;font-size:12px;color: red;display: none" id="error_span_already">Possibly use different username</div>
+
+   <div style="margin-left: 160px;margin-top: 50px;font-size:12px;color: red;display: none" id="pass_error_span">Passwords are not the same</div>
+
+
+</div>
+
+
+
+<script type="text/javascript">
+  
+         function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+      }
+      var csrftoken = getCookie('csrftoken');
+       $.ajaxSetup({
+              headers: { "X-CSRFToken": getCookie("csrftoken") }
+          });
+    
+
+     $(function() {
+
+
+
+
+
+      $('#create_account').click(function(){
+
+        $('#rect').hide()
+        $('#rect_reg').fadeIn()
+      })
+       
+
+
+       $('#back_to_login').click(function(){
+
+        $('#rect').fadeIn()
+        $('#rect_reg').hide()
+      })
+
+      $("#top_form").submit(function(e){
+           e.preventDefault();
+
+       var hellyeah = true;
+       var key = $('#key_input').val();
+       var pass = $('#pass_input').val();
+
+
+
+
+       if (key == ''){
+
+             $('#key_input').css({'border-color':'red'});
+             hellyeah = false;
+
+
+       }
+
+      if (pass == ''){
+         
+         $('#pass_input').css({'border-color':'red'})
+         hellyeah =  false;
+         
+      }
+
+
+      if(hellyeah == true){
+
+      
+         $.ajax({
+    url: '/login/',
+    type:'POST',
+    dataType: 'json',
+    data: {"key": key, "password": pass, 'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+
+
+
+// alert(JSON.stringify(data));
+
+
+   var sed = data['action'];
+   if (sed == 'signup'){
+    $('#error_span').show()
+  $('#rect').css({'border-color':'red'})
+
+   }
+
+   else{
+         location.reload();
+   }
+      
+    },
+    error : function(data) {
+   // }
+   // }
+     
+ alert('no');
+    }
+
+
+  })
+      }
+
+
+
+
+});
+
+
+       $("#reg_form").submit(function(e){
+           e.preventDefault();
+
+
+       var hellyeah = true;
+       var key = $('#key_input_reg').val();
+        var pass1 = $('#pass_1').val();
+       var pass2 = $('#pass_2').val();
+
+
+
+
+
+       if (pass1 != pass2){
+
+        $('#pass_error_span').show();
+        $('.pass_input_reg').css({'border-color':'red'});
+        // alert();
+         hellyeah = false;
+       }
+
+       if (key == ''){
+
+             $('#key_input_reg').css({'border-color':'red'});
+             hellyeah = false;
+
+
+       }
+
+      if (pass1 == ''){
+         
+         $('.pass_input_reg').css({'border-color':'red'})
+         hellyeah =  false;
+         
+      }
+
+
+      if(hellyeah == true){
+
+      
+         $.ajax({
+    url: '/sign_up/',
+    type:'POST',
+    dataType: 'json',
+    data: {"key": key, "password": pass1, 'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+
+
+
+  var sed = data['action'];
+   if (sed == 'error'){
+      $('#error_span_already').show()
+  $('#rect').css({'border-color':'red'})
+   }
+
+   else{
+         location.reload();
+   }
+      
+    },
+    error : function(data) {
+     
+ alert('no');
+    }
+
+
+  })
+      }
+
+});
+
+
+
+
+
+
+
+     })
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Task Management</title>
+
+ 
+  
+<link href="https://fonts.googleapis.com/css?family=Palanquin+Dark" rel="stylesheet">
+       <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  
+<link href="https://fonts.googleapis.com/css?family=Arimo:400,700" rel="stylesheet">
+</head>
+<style type="text/css">
+
+
+#logout:hover{
+
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.the_input{
+  width: 360px;height: 30px;border-top:none;border-left:none;border-right:none;display: block;margin-left: 60px;margin-top: 60px;
+border-bottom: 1px solid #000000;
+}
+
+.pass_input_reg{
+ width: 360px;height: 30px;border-top:none;border-left:none;border-right:none;display: block;margin-left: 60px;margin-top: 60px;
+border-bottom: 1px solid #000000;
+
+}
+
+input[type="button"]:hover{
+
+cursor: pointer;
+opacity: 0.5;
+}
+
+input[type="submit"]:hover{
+
+cursor: pointer;
+
+}
+
+#back_to_login:hover{
+  cursor: pointer;
+  opacity: 1;
+}
+
+  
+.the_input:focus{
+   transition: ease-in-out, width .35s ease-in-out;
+   border-color:black;
+   color: black;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+
+#add_task{
+cursor: pointer;
+opacity: 0.5;
+
+}
+
+a:link{
+  text-decoration: none;
+  color: black;
+}
+
+
+
+a:visited{
+
+  color: black;
+}
+
+</style>
+
+<body style="margin: 0 !important;padding: 0 !important;background: #F6F6F6;font-family: 'Arimo', sans-serif;">
+
+
+<div style="
+background: #FDFDFD;width: 240px;height: 100%;position: fixed;">
+<div style="font-family: 'Palanquin Dark', sans-serif;font-size: 26px;margin-left: 20px;margin-top: 50px;opacity: 0.4;">ASAP</div>
+
+<div style="margin-left: 20px;position: relative;margin-top: 60px;opacity: 0.7;"><b><a href="/home/"><u>All tasks</u></a></b></div>
+<div style="margin-left: 20px;position: relative;margin-top: 12px;opacity: 0.7;"><a href="/done/"><b>Done tasks</b></a></div>
+<div style="margin-left: 20px;position: relative;margin-top: 12px;opacity: 0.7;" id="logout"><b>Logout</b></div>
+<div style="margin-left: 20px;position: relative;margin-top: 52px;opacity: 0.7;width:100px;height: 50px;text-align: center;line-height: 50px;border-radius: 50px;border:2px solid black;" id="add_task"><b>Add task</b></div>
+</div>
+
+
+<div style="width: 50%;height:900px;margin-left:500px;">
+{% for task in tasks %}
+<br/><br/>
+
+{% if task.done == True %}
+<div data-task-id="{{ task.id }}" style="
+background: #FFFFFF;width: 700px;min-height: 200px;padding-bottom:30px;position:relative;border:1px solid red;">
+
+ {% else %}      
+<div data-task-id="{{ task.id }}" style="
+background: #FFFFFF;width: 700px;min-height: 200px;padding-bottom:30px;position:relative;">
+{% endif %}
+<div style="position:relative;float: left;width: 300px;height: 40px;margin-top: 20px;margin-left: 20px;
+font-size: 13px;
+color: #5C5C5C;"> {{ task.created_date }}</div>
+
+<div style="position:relative;width:160px;padding-top: 20px;margin-right: 20px;
+font-size: 13px;color:black;display: inline-block;margin-left: 60px;text-align: right;" id="desc_text">
+{% if task.done %}
+
+done by {{ task.done_by.user.username }}
+
+
+ {% else %}    
+
+ {% endif %}
+</div>
+
+
+<div style="position:relative;height: 40px;padding-top: 20px;margin-right: 20px;
+font-size: 13px;margin-left: 5px;display: inline-block;color:#D0011B"> Created by {{ task.created_by.user.username }}</div>
+
+
+<div style="margin-left: 20px;font-size: 22px;" id="title"><b> {{ task.title }} </b></div>
+<div  style="margin-left: 20px;margin-top:10px;font-size: 16px;padding-bottom: 20px;min-height: 100px;"  id="text"> {{ task.text }}</div>
+
+
+<div style="position: relative;width: 100%;height: 50px;border-top:2px dotted #D0011B;">
+<!--   <div style="background:#F9F9F9;border:1px solid gray;width: 80px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 10px;margin-left:15px;" id="do_it">Do it</div> -->
+<div id="done-undone" style="width:130px;height:60px;position:relative;display:inline-block;">
+{% if task.done == True %}
+
+    <div style="background:white;border:1px solid gray;width: 90px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:15px;display: inline-block;margin-left:30px;font-size: 13px;display: none;" id="mark_done">Mark done</div>
+
+       <div style="background:#F9F9F9;border:1px solid gray;width: 130px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:15px;display: inline-block;font-size: 13px;" id="mark_undone">Mark undone</div>
+
+ {% else %}      
+
+
+ <div style="background:white;border:1px solid gray;width: 90px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:15px;display: inline-block;margin-left:30px;font-size: 13px;" id="mark_done">Mark done</div>
+
+       <div style="background:#F9F9F9;border:1px solid gray;width: 100px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:15px;display: inline-block;font-size: 13px;display: none;" id="mark_undone">Mark undone</div>
+
+{% endif %}
+
+
+</div>
+        <div style="background:#F9F9F9;border:1px solid gray;width: 80px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:25px;display: inline-block;font-size: 13px" id="edit">Edit</div>
+
+
+        <div style="background:#BF3B3B;border:1px solid gray;width: 80px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:15px;display: inline-block;font-size: 13px;color: white;opacity: 0.9;" id="delete">Delete</div>
+</div>
+
+</div><br/>
+
+
+
+{% endfor %}
+</div>
+
+<div style="position: absolute;;background: black;opacity: 0.5;width: 100%;height:900px;top:0;display: none;" id="black_rect"></div>
+<div style="position: fixed; left: 0; 
+  right: 0; top:200px;
+  margin-left: auto; 
+  margin-right: auto; width: 600px;height: 400px;background: white;display: none;" id="add_rect">
+
+
+<form method='POST' action="/add/">
+  
+{% csrf_token %}
+<input type="text" style="border:none;background: #F6F6F6;width: 400px;height:40px;margin-left:20px;margin-top: 20px;text-indent: 10px;" placeholder="Title" name="title"  required placeholder="Title please"></input>
+
+<input type="text" style="border:none;background: #F6F6F6;width: 500px;height:200px;margin-left:20px;margin-top: 20px;text-indent: 10px;padding-top: 10px;" name="text" required placeholder=""></input>
+
+<input type="submit" style="text-align: center;line-height: 50px;border-radius: 50px;border:1px solid black;background: white;padding: 0px 40px;margin-left: 20px;margin-top: 20px;" value="Send"></input>
+
+</form>
+
+
+  </div>
+
+
+<script type="text/javascript">
+  
+         function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+      }
+      var csrftoken = getCookie('csrftoken');
+       $.ajaxSetup({
+              headers: { "X-CSRFToken": getCookie("csrftoken") }
+          });
+    
+
+     $(function() {
+
+ $('#logout').click(function(){
+
+
+
+$.ajax({
+    url: '/logout/',
+    type:'POST',
+    dataType: 'json',
+    data: {'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+
+
+    window.location.href = "/";
+
+      
+    },
+    error : function(data) {
+     
+ alert('error');
+    }
+
+
+  })
+
+ })
+
+     $(document).on("click", "#mark_done", function(){
+
+      var path  =  $(this).parent().parent().parent();
+      var task_id = path.data("task-id");
+
+     
+$.ajax({
+    url: '/mark_done/',
+    type:'POST',
+    dataType: 'json',
+    data: {'task_id':task_id, 'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+      path.css({'border':'1px solid #D0011B'})
+      $(path).find('#desc_text').html('Done by {{ request.user.username}}')
+      $('#mark_done').hide()
+      $('#mark_undone').fadeIn()
+
+      
+    },
+    error : function(data) {
+     
+ alert('no');
+    }
+
+
+  })
+
+      })
+
+
+
+      $(document).on("click", "#mark_undone", function(){
+
+      var path  =  $(this).parent().parent().parent();
+      var task_id = path.data("task-id");
+     
+$.ajax({
+    url: '/mark_undone/',
+    type:'POST',
+    dataType: 'json',
+    data: {'task_id':task_id, 'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+      path.css({'border':'none'})
+      $(path).find('#desc_text').html('')
+ $('#mark_undone').hide()
+      $('#mark_done').fadeIn()
+      
+    },
+    error : function(data) {
+     
+ alert('no');
+    }
+
+
+  })
+
+      })
+
+
+      $(document).on("click", "#edit", function(){
+
+ var path  =  $(this).parent().parent();
+  var task_id = path.data("task-id");
+
+
+
+   var title_edit = $("<input  id='title_edited' style='border:none;background:#F9F9F9;margin-left:20px;width:400px;height:30px;' value='" + $(path).find('#title > b').html() + "'/>");
+
+
+   var text_edit = $("<input id='text_edited' style='border:none;background:#F9F9F9;margin-left:20px;margin-top:20px;;margin-bottom:20px;width:400px;height:140px;' value='" + $(path).find('#text').html() + "'/>");
+
+  $(path).find('#title').replaceWith(title_edit);
+ $(path).find('#text').replaceWith(text_edit);
+
+
+$(this).replaceWith('<div style="background:#F9F9F9;border:1px dashed gray;width: 80px;height:46px;border-radius: 100px; line-height: 50px;text-align: center;margin-top: 20px;margin-left:25px;display: inline-block;font-size: 13px" id="save_edit">Save</div>')
+
+   $(document).on("click", "#save_edit", function(){
+
+
+        var title_edited = $('#title_edited').val()
+        var text_edited = $('#text_edited').val()
+
+
+
+
+        $.ajax({
+    url: '/edit/',
+    type:'POST',
+    dataType: 'json',
+    data: {'task_id':task_id, 'new_title':title_edited, 'new_text':text_edited, 'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+      location.reload()
+      
+    },
+    error : function(data) {
+     
+ alert('no');
+    }
+
+
+  })
+
+
+   })
+
+
+
+      })
+
+
+ $(document).on("click", "#delete", function(){
+
+      var ele = $(this);
+      var path  =  $(this).parent().parent();
+      var task_id = path.data("task-id");
+
+     
+$.ajax({
+    url: '/delete/',
+    type:'POST',
+    dataType: 'json',
+    data: {'task_id':task_id, 'csrfmiddlewaretoken': getCookie('csrftoken') },
+    success: function (data) {
+    
+
+
+     path.fadeOut()
+
+      
+    },
+    error : function(data) {
+     
+ alert('error');
+    }
+
+
+  })
+
+
+ })  
+
+$('#add_task').click(function(){
+
+
+
+  $('#black_rect').fadeIn();
+  $('#add_rect').fadeIn();
+})
+
+     
+
+
+
+     })
+</script>
+
+</body>
+</html>
