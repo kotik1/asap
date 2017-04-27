@@ -1,18 +1,12 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-# Create your views here.
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from .models import *
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
-# from . import views
-# from . import models
-
-def intro(request):
-	 return render(request, "intro.html", {})
 
 def home(request):
 	if request.user.is_authenticated():
@@ -38,9 +32,6 @@ def login(request):
 			auth.login(request, user)
 			username = auth.get_user(request).username
 			print ('logged in succesfully')
-			# return render(request, "workspace.html", {})
-			# return redirect('home')
-			# return HttpResponseRedirect('/')
 			data = {
 			'action': 'relocate',
 			 }
@@ -111,7 +102,6 @@ def sign_up(request):
 			user = auth.authenticate(username=username, password=password)
 			auth.login(request, user)
 			print (userprofile)
-			# return render(request, "workspace.html", {})
 			data = {
 			'action': 'relocate',
 
